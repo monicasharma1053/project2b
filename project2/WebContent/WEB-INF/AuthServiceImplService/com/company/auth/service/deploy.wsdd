@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Use this file to deploy some handlers/chains and services      --><!-- Two ways to do this:                                           --><!--   java org.apache.axis.client.AdminClient deploy.wsdd          --><!--      after the axis server is running                          --><!-- or                                                             --><!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   --><!--      from the same directory that the Axis engine runs         --><deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from AuthServiceImplService WSDL service -->
+
+  <service name="AuthServiceImpl" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://service.auth.company.com"/>
+      <parameter name="wsdlServiceElement" value="AuthServiceImplService"/>
+      <parameter name="schemaQualified" value="http://bean.auth.company.com,http://service.auth.company.com"/>
+      <parameter name="wsdlServicePort" value="AuthServiceImpl"/>
+      <parameter name="className" value="com.company.auth.service.AuthServiceImpl"/>
+      <parameter name="wsdlPortType" value="AuthServiceImpl"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation xmlns:operNS="http://service.auth.company.com" xmlns:retNS="http://service.auth.company.com" xmlns:rtns="http://bean.auth.company.com" name="getEmployee" qname="operNS:getEmployee" returnQName="retNS:getEmployeeReturn" returnType="rtns:Employee" soapAction="">
+        <parameter xmlns:pns="http://service.auth.company.com" xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="pns:gid" type="tns:string"/>
+      </operation>
+      <parameter name="allowedMethods" value="getEmployee"/>
+
+      <typeMapping xmlns:ns="http://service.auth.company.com" qname="ns:&gt;getEmployee" type="java:com.company.auth.service.GetEmployee" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://service.auth.company.com" qname="ns:&gt;getEmployeeResponse" type="java:com.company.auth.service.GetEmployeeResponse" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <typeMapping xmlns:ns="http://bean.auth.company.com" qname="ns:Employee" type="java:com.company.auth.bean.Employee" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle=""/>
+      <arrayMapping xmlns:ns="http://service.auth.company.com" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema" qname="ns:ArrayOf_xsd_anyType" type="java:java.lang.Object[]" innerType="cmp-ns:anyType" encodingStyle=""/>
+  </service>
+</deployment>
